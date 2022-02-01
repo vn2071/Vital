@@ -22,7 +22,6 @@ def welcome_assignment_answers(question):
         answer = 2
     return answer
 
-
 # Complete all the questions.
 if __name__ == "__main__":
     # use this space to debug and verify that the program works
