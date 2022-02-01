@@ -2,12 +2,12 @@
 # Input - All eight questions given in the assignment.
 # Output - The right answer for the specific question.
 def welcome_assignment_answers(question):
-    if question == "In Slack, what is the secret passphrase posted in the #lab-python-getting-started channel posted by a TA?":
-                    answer = "mtls"
+    #if question == "In Slack, what is the secret passphrase posted in the #lab-python-getting-started channel posted by a TA?":
+                   # answer = "mtls"
     #elif question == "Are encoding and encryption the same? - Yes/No":
                     #answer = "No"
-    #elif question == "Is it possible to decrypt a message without a key? - Yes/No":
-                    #answer = "No"
+    if question == "Is it possible to decrypt a message without a key? - Yes/No":
+                    answer = "No"
     #elif question == "Is it possible to decode a message without a key? - Yes/No":
                     #answer = "Yes"
    # elif question == "Is a hashed message supposed to be un-hashed?- Yes/No":
