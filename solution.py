@@ -1,6 +1,5 @@
 from socket import *
 
-
 def smtp_client(port=1025, mailserver='127.0.0.1'):
     msg = "\r\n My message"
     endmsg = "\r\n.\r\n"
@@ -19,7 +18,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     heloCommand = 'HELO Vitalis\r\n'
     clientSocket.send(heloCommand.encode())
     recv1 = clientSocket.recv(1024).decode()
-    print(recv1)
+    # print(recv1)
     if recv1[:3] != '250':
        # print('250 reply not received from server.')
 
