@@ -87,7 +87,7 @@ def ping(host, timeout = 1):
     packet_max = (max(values))
     packet_min = (min(values))
     packet_avg = (sum(values)/len(values))
-    vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)), str(round(stdev(values), 2))]
+    vars = [str(round(packet_min, 8)), str(round(packet_avg, 8)), str(round(packet_max, 8)), str(round(stdev(values), 8))]
     print(vars)
     return vars
 
