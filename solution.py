@@ -83,8 +83,7 @@ def ping(host, timeout = 1):
         delay = doOnePing(dest, timeout)
         values.append(delay)
         time.sleep(1)
-
-
+        print(delay)
     packet_max = (max(values))
     packet_min = (min(values))
     packet_avg = (sum(values)/len(values))
