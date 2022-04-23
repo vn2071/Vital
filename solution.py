@@ -114,6 +114,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     tracelist1.append("error")
                     print(tracelist2)
+                    tracelist1.clear()
                     return tracelist2
                 else:
                     tracelist1.append("error")
