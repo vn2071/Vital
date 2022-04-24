@@ -53,9 +53,7 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
-
     tracelist2 = []
-
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
             destAddr = socket.gethostbyname(hostname)
@@ -73,11 +71,13 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:
                     tracelist1.append("* * * Request timed out.")
+                    tracelist2.append(tracelist1)
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
+                    tracelist2.append(tracelist1)
             except socket.timeout:
                 continue
             else:
@@ -94,23 +94,23 @@ def get_route(hostname):
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    tracelist1.append((str(ttl), str(round((timeReceived-t)*1000)) + "ms", addr[0], theName))
+                    tracelist1=((str(ttl), str(round((timeReceived-t)*1000)) + "ms", addr[0], theName))
                     tracelist2.append(tracelist1)
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000)) + "ms", addr[0], theName))
+                    tracelist1=((str(ttl), str(round((timeReceived - t) * 1000)) + "ms", addr[0], theName))
                     tracelist2.append(tracelist1)
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000)) + "ms", addr[0], theName))
+                    tracelist1=((str(ttl), str(round((timeReceived - t) * 1000)) + "ms", addr[0], theName))
                     tracelist2.append(tracelist1)
-                    tracelist1.clear()
                     print(tracelist2)
                     return tracelist2
                 else:
                     tracelist1.append("error")
+                    tracelist2.append(tracelist1)
                     break
             finally:
                 mySocket.close()
