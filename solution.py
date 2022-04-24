@@ -51,7 +51,6 @@ def build_packet():
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, unique_ID, 1)
     packet = header + data
     return packet
-
 def get_route(hostname):
     timeLeft = TIMEOUT
     tracelist1 = []
@@ -59,7 +58,6 @@ def get_route(hostname):
     destAddr = socket.gethostbyname(hostname)
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
-            tracelist2.append(tracelist1)
             icmp = socket.getprotobyname("icmp")
             mySocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
 
@@ -74,13 +72,12 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:
                     tracelist1.append("* * * Request timed out.")
-                    tracelist1.append(whatReady[0])
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
-                    tracelist1.append(tracelist1)
+                  
 
             except socket.timeout:
                 continue
@@ -97,7 +94,6 @@ def get_route(hostname):
                 except herror:
                     nameSplit = destAddr
                     theName = "hostname not returnable"
-                    return theName
 
                 if types == 11:
                     bytes = struct.calcsize("d")
