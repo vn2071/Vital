@@ -84,8 +84,12 @@ def get_route(hostname):
                 icmpHeader = recvPacket[20:28]
                 types, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
                 try:
-                    heName = gethostbyaddr(addr[0])[0]
+                    theName = gethostbyaddr(addr[0])[0]
+                    nameSplit = theName
+                    if  nameSplit !=[]:
+                        theName = nameSplit
                 except herror:
+                    nameSplit = addr
                     theName = "hostname not returnable"
                 if types == 11:
                     bytes = struct.calcsize("d")
