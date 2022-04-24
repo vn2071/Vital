@@ -55,10 +55,10 @@ def get_route(hostname):
     timeLeft = TIMEOUT
 
     tracelist2 = []
-
+    destAddr = socket.gethostbyname(hostname)
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
-            destAddr = socket.gethostbyname(hostname)
+            
             tracelist1 = []
             tracelist2.append(tracelist1)
             icmp = socket.getprotobyname("icmp")
