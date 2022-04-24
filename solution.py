@@ -11,18 +11,26 @@ ICMP_ECHO_REQUEST = 8
 MAX_HOPS = 30
 TIMEOUT = 2.0
 TRIES = 1
+# The packet that we shall send to each router along the path is the ICMP echo
+# request packet, which is exactly what we had used in the ICMP ping exercise.
+# We shall use the same packet that we built in the Ping exercise
+
 def checksum(string):
+# In this function we make the checksum of our packet
     csum = 0
     countTo = (len(string) // 2) * 2
     count = 0
+
     while count < countTo:
         thisVal = (string[count + 1]) * 256 + (string[count])
         csum += thisVal
         csum &= 0xffffffff
         count += 2
+
     if countTo < len(string):
         csum += (string[len(string) - 1])
         csum &= 0xffffffff
+
     csum = (csum >> 16) + (csum & 0xffff)
     csum = csum + (csum >> 16)
     answer = ~csum
@@ -45,8 +53,9 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
-    
+
     tracelist2 = []
+
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
             destAddr = socket.gethostbyname(hostname)
@@ -65,13 +74,13 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []:
                     tracelist1.append("* * * Request timed out.")
-                tracelist1.append(whatReady[0])
+                #tracelist1.append(whatReady[0])
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
-                tracelist1.append(tracelist1)
+                #tracelist1.append(tracelist1)
 
             except socket.timeout:
                 continue
@@ -80,15 +89,14 @@ def get_route(hostname):
                 icmpHeader = recvPacket[20:28]
                 types, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
                 try:
-                    theName = gethostbyaddr(destAddr)[0]
-                    nameSplit = theName.split(".")[0]
-                    if theName == nameSplit:
-                        theName = " "
-                    #Fill in end
+                    theName = gethostbyaddr(addr[0])
+                    nameSplit = theName[0].split(",")
+                    if  nameSplit !=[]:
+                        theName = nameSplit
                 except herror:
-                    nameSplit = destAddr
+                    nameSplit = addr
                     theName = "hostname not returnable"
-                    return theName
+
 
                 if types == 11:
                     bytes = struct.calcsize("d")
@@ -102,6 +110,7 @@ def get_route(hostname):
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000)) + "ms", addr[0], theName))
+                    tracelist1.clear()
                     print(tracelist2)
                     return tracelist2
 
