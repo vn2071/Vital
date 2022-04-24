@@ -60,7 +60,6 @@ def get_route(hostname):
         for tries in range(TRIES):
             destAddr = socket.gethostbyname(hostname)
             tracelist1 = []
-            tracelist2.append(tracelist1)
             icmp = socket.getprotobyname("icmp")
             mySocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
             mySocket.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
@@ -79,10 +78,8 @@ def get_route(hostname):
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
-
             except socket.timeout:
                 continue
-
             else:
                 icmpHeader = recvPacket[20:28]
                 types, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
@@ -94,24 +91,24 @@ def get_route(hostname):
                 except herror:
                     nameSplit = addr
                     theName = "hostname not returnable"
-
-
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     tracelist1.append((str(ttl), str(round((timeReceived-t)*1000)) + "ms", addr[0], theName))
+                    tracelist2.append(tracelist1)
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000)) + "ms", addr[0], theName))
+                    tracelist2.append(tracelist1)
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000)) + "ms", addr[0], theName))
+                    tracelist2.append(tracelist1)
                     tracelist1.clear()
                     print(tracelist2)
                     return tracelist2
-
                 else:
                     tracelist1.append("error")
                     break
