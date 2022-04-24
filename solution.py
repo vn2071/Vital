@@ -11,26 +11,18 @@ ICMP_ECHO_REQUEST = 8
 MAX_HOPS = 30
 TIMEOUT = 2.0
 TRIES = 1
-# The packet that we shall send to each router along the path is the ICMP echo
-# request packet, which is exactly what we had used in the ICMP ping exercise.
-# We shall use the same packet that we built in the Ping exercise
-
 def checksum(string):
-# In this function we make the checksum of our packet
     csum = 0
     countTo = (len(string) // 2) * 2
     count = 0
-
     while count < countTo:
         thisVal = (string[count + 1]) * 256 + (string[count])
         csum += thisVal
         csum &= 0xffffffff
         count += 2
-
     if countTo < len(string):
         csum += (string[len(string) - 1])
         csum &= 0xffffffff
-
     csum = (csum >> 16) + (csum & 0xffff)
     csum = csum + (csum >> 16)
     answer = ~csum
@@ -53,12 +45,11 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
-
+    
     tracelist2 = []
-    destAddr = socket.gethostbyname(hostname)
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
-            
+            destAddr = socket.gethostbyname(hostname)
             tracelist1 = []
             tracelist2.append(tracelist1)
             icmp = socket.getprotobyname("icmp")
