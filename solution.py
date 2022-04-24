@@ -60,7 +60,7 @@ def get_route(hostname):
         for tries in range(TRIES):
             destAddr = socket.gethostbyname(hostname)
             tracelist1 = []
-           
+            tracelist2.append(tracelist1)
             icmp = socket.getprotobyname("icmp")
             mySocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
             mySocket.setsockopt(socket.IPPROTO_IP, socket.IP_TTL, struct.pack('I', ttl))
